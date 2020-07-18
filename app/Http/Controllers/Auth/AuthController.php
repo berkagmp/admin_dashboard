@@ -7,11 +7,27 @@ use App\Http\Controllers\ResponseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Validator;
 use App\User;
 
 class AuthController extends ResponseController
 {
+    public function delete_tokens($user)
+    {
+        if (isset($user->tokens) && !empty($user->tokens)) {
+            $user->tokens->each(function ($token) {
+                $token->revoke();
+            });
+        }
+    }
+
+    public function generate_token($user)
+    {
+        $this->delete_tokens($user);
+        return $user->createToken('token')->accessToken;
+    }
+
     //create user
     public function signup(Request $request): JsonResponse
     {
@@ -27,10 +43,11 @@ class AuthController extends ResponseController
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['uid'] = Str::uuid();
         $user = User::create($input);
 
         if ($user) {
-            $success['token'] =  $user->createToken('token')->accessToken;
+            $success['token'] =  $this->generate_token($user);
             $success['message'] = "Registration has been successfull.";
 
             return $this->sendResponse($success, Response::HTTP_CREATED);
@@ -57,7 +74,7 @@ class AuthController extends ResponseController
         }
 
         $user = $request->user();
-        $success['token'] =  $user->createToken('token')->accessToken;
+        $success['token'] =  $this->generate_token($user);
 
         return $this->sendResponse($success);
     }
