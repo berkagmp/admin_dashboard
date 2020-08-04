@@ -17,6 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::prefix('todo')->group(function () {
+    Route::post('/', 'API\TodoController@create');
+    Route::get('/', 'API\TodoController@all');
+    Route::get('/{id}', 'API\TodoController@get');
+    Route::put('/{id}', 'API\TodoController@update');
+    Route::delete('/{id}', 'API\TodoController@delete');
+});
+
 Route::prefix('auth')->group(function () {
     Route::post('signup', 'Auth\AuthController@signup');
     Route::post('login', 'Auth\AuthController@login');
