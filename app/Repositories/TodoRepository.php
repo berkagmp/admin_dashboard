@@ -46,7 +46,7 @@ class TodoRepository implements TodoRepositoryInterface
      */
     public function update(int $todo_id, array $todo_data)
     {
-        Todo::find($todo_id)->update($todo_data);
+        return Todo::findOrFail($todo_id)->update($todo_data);
     }
 
     /**
