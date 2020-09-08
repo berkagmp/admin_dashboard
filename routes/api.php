@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::prefix('temp')->group(function () {
+    Route::get('/recent/{limit}', 'API\TempController@recent');
+    Route::get('/stat', 'API\TempController@stat');
+});
+
 Route::group(['middleware' => 'auth:api'], function () {
     Route::prefix('todo')->group(function () {
         Route::post('/', 'API\TodoController@create');

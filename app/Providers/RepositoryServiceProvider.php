@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\TempRepository;
+use App\Repositories\TempRepositoryImpl;
 use App\Repositories\TodoRepository;
-use App\Repositories\TodoRepositoryInterface;
+use App\Repositories\TodoRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -16,8 +18,13 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            TodoRepositoryInterface::class,
-            TodoRepository::class
+            TodoRepository::class,
+            TodoRepositoryImplImpl::class
+        );
+
+        $this->app->bind(
+            TempRepository::class,
+            TempRepositoryImpl::class
         );
     }
 
