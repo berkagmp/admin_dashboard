@@ -22,16 +22,6 @@ Route::prefix('temp')->group(function () {
     Route::get('/stat', 'API\TempController@stat');
 });
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::prefix('todo')->group(function () {
-        Route::post('/', 'API\TodoController@create');
-        Route::get('/', 'API\TodoController@all');
-        Route::get('/{id}', 'API\TodoController@get');
-        Route::put('/{id}', 'API\TodoController@update');
-        Route::delete('/{id}', 'API\TodoController@delete');
-    });
-});
-
 Route::prefix('auth')->group(function () {
     Route::post('signup', 'Auth\AuthController@signup');
     Route::post('login', 'Auth\AuthController@login');

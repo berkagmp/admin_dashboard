@@ -15,8 +15,8 @@ class CreateSoapRoomsTable extends Migration
     {
         Schema::create('soap_room', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->float('cpu');
-            $table->float('gpu');
+            $table->float('temp');
+            $table->float('humidity');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
